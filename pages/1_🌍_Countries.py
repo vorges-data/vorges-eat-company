@@ -170,7 +170,7 @@ st.sidebar.markdown("""---""")
 
 st.sidebar.markdown('## Filtros')
 
-# Filtro
+# Filtro 1
 countries = st.sidebar.multiselect(
     'Escolha os Países que deseja visualizar:',
     df2.loc[:,'country'].unique().tolist(),
@@ -178,13 +178,25 @@ countries = st.sidebar.multiselect(
 )
 st.sidebar.markdown("""---""")
 
-st.sidebar.selectbox(
-    'Tipo de Preço Avaliado:',
-    df2.loc[:,'price_type'].unique().tolist()
-    #default = ['expensive', 'gourmet', 'normal', 'cheap']
+# Filtro 2
+price_type_filter = st.sidebar.multiselect(
+    'Escolha o Tipo de Preço Avaliado:',
+    df2.loc[:,'price_type'].unique().tolist(),
+    default = ['expensive', 'gourmet', 'normal', 'cheap']
 )
 st.sidebar.markdown("""---""")
 
+#========================================================================
+#========================== Ativando filtros ============================
+#========================================================================
+
+# Filtro 1
+linhas_selecionadas_countries = df2['country'].isin( countries )
+df2 = df2.loc[linhas_selecionadas_countries, :]
+
+# Filtro 2
+linhas_selecionadas_price = df2['price_type'].isin( price_type_filter )
+df2 = df2.loc[linhas_selecionadas_price, :]
 
 #========================================================================
 #========================== Layout no Streamlit =========================
@@ -283,7 +295,8 @@ with st.container():
 
     fig = px.bar(aux, x='country', 
                   y='city', 
-                  labels={'country': 'País', 'city': 'Cidade'}, 
+                  labels={'country': 'País', 'city': 'Cidade'},
+                  color="country",
                   title='Quantidade de cidades registradas por País')
 
     st.plotly_chart(fig)
@@ -299,6 +312,7 @@ with st.container():
     fig = px.bar( aux, x='country', 
                       y='votes',  
                       title='Média de Avaliações',
+                      color="country",
                       labels={'country':'País', 'votes':'Média Avaliação'} )
 
     st.plotly_chart(fig)
@@ -315,6 +329,7 @@ with st.container():
              x='country', 
              y='average_cost_for_two', 
              labels={'country':'País', 'average_cost_for_two':'Média de Preço de um prato para duas pessoas'}, 
+            color="country",
              title='Média de Preço de um prato para duas pessoas')
 
     st.plotly_chart(fig)

@@ -163,7 +163,7 @@ st.sidebar.markdown("""---""")
 
 st.sidebar.markdown('## Filtros')
 
-# Filtro
+# Filtro 1
 countries = st.sidebar.multiselect(
     'Escolha os Países que deseja visualizar:',
     df2.loc[:,'country'].unique().tolist(),
@@ -171,12 +171,37 @@ countries = st.sidebar.multiselect(
 )
 st.sidebar.markdown("""---""")
 
-st.sidebar.selectbox(
-    'Tipo de Preço Avaliado:',
-    df2.loc[:,'price_type'].unique().tolist()
-    #default = ['expensive', 'gourmet', 'normal', 'cheap']
+# Filtro 2
+price_type_filter = st.sidebar.multiselect(
+    'Escolha o Tipo de Preço Avaliado:',
+    df2.loc[:,'price_type'].unique().tolist(),
+    default = ['expensive', 'gourmet', 'normal', 'cheap']
 )
 st.sidebar.markdown("""---""")
+
+# Filtro 3
+cities = st.sidebar.multiselect(
+    'Escolha as Cidades que deseja visualizar:',
+    df2.loc[:,'city'].unique().tolist(),
+    default=['London','Doha','Pretoria','Cape Town','Durban','Rio de Janeiro']
+)
+st.sidebar.markdown("""---""")
+
+#========================================================================
+#========================== Ativando filtros ============================
+#========================================================================
+
+# Filtro 1
+linhas_selecionadas_countries = df2['country'].isin( countries )
+df2 = df2.loc[linhas_selecionadas_countries, :]
+
+# Filtro 2
+linhas_selecionadas_price = df2['price_type'].isin( price_type_filter )
+df2 = df2.loc[linhas_selecionadas_price, :]
+
+# Filtro 3
+linhas_selecionadas_cities = df2['city'].isin( cities )
+df2 = df2.loc[linhas_selecionadas_cities, :]
 
 #========================================================================
 #========================== Layout no Streamlit =========================

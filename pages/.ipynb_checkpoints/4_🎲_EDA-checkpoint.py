@@ -62,7 +62,7 @@ def get_numerical_attributes(dataframe):
 def get_cat_attributes(dataframe):
     return dataframe.select_dtypes(exclude=['int64','float64'])
 
-# renomear as colunas em snakecase
+# renomear as colunas em snakecase 
 def rename_columns(dataframe):
     df = dataframe.copy()
     title = lambda x: inflection.titleize(x)
@@ -205,7 +205,9 @@ st.sidebar.markdown("""---""")
 
 st.sidebar.markdown('## Filtros')
 
-# Filtro
+#============================================================================
+
+# Filtro 1
 countries = st.sidebar.multiselect(
     'Escolha os Países que deseja visualizar:',
     df2.loc[:,'country'].unique().tolist(),
@@ -213,18 +215,27 @@ countries = st.sidebar.multiselect(
 )
 st.sidebar.markdown("""---""")
 
-price_type = st.sidebar.selectbox(
-    'Tipo de Preço Avaliado:',
-    df2.loc[:,'price_type'].unique().tolist()
-    #default = ['expensive', 'gourmet', 'normal', 'cheap']
+# Filtro 2
+price_type_filter = st.sidebar.multiselect(
+    'Escolja o Tipo de Preço Avaliado:',
+    df2.loc[:,'price_type'].unique().tolist(),
+    default = ['expensive', 'gourmet', 'normal', 'cheap']
 )
 st.sidebar.markdown("""---""")
 
-votes = st.sidebar.slider(
-    'Quantidade de Avaliações do Restaurante:',
-    min_value = 0,
-    max_value = 41333)
-st.sidebar.write('A quantidade de avaliações selecionadas: ', votes)
+
+#========================================================================
+#========================== Ativando filtros ============================
+#========================================================================
+
+# Filtro 1
+linhas_selecionadas_countries = df2['country'].isin( countries )
+df2 = df2.loc[linhas_selecionadas_countries, :]
+
+# Filtro 2
+linhas_selecionadas_price = df2['price_type'].isin( price_type_filter )
+df2 = df2.loc[linhas_selecionadas_price, :]
+
 
 
 #========================================================================
