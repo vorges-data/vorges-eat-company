@@ -177,3 +177,147 @@ st.sidebar.selectbox(
     #default = ['expensive', 'gourmet', 'normal', 'cheap']
 )
 st.sidebar.markdown("""---""")
+
+#========================================================================
+#========================== Layout no Streamlit =========================
+#========================================================================
+
+st.markdown('### Overview das Cidades')
+
+#=================================================================================
+
+with st.container():
+    # GRAFICO 1
+
+    group_df = (
+        df2.loc[
+            (df2["aggregate_rating"] >= 4) & (df2["country"].isin(countries)),
+            ["restaurant_id", "country", "city"],
+        ]
+        .groupby(["country", "city"])
+        .count()
+        .reset_index()
+        .sort_values(["restaurant_id"], ascending=[False])
+        
+    )
+    
+    fig = px.bar(
+        group_df.head(10),
+        x="city",
+        y="restaurant_id",
+        text="restaurant_id",
+        text_auto=".2f",
+        color="country",
+        title="Top 10 Cidades com Restaurantes- média de avaliação acima de 4",
+        labels={
+            "city": "Cidade",
+            "restaurant_id": "Quantidade de Restaurantes",
+            "country": "País",
+        },
+    )
+
+    st.plotly_chart(fig)
+
+#=================================================================================
+
+    # GRAFICO 2
+    group_df = (
+        df2.loc[
+            (df2["aggregate_rating"] < 4) & (df2["country"].isin(countries)),
+            ["restaurant_id", "country", "city"],
+        ]
+        .groupby(["country", "city"])
+        .count()
+        .sort_values(["restaurant_id", "city"], ascending=[False, True])
+        .reset_index()
+    )
+
+    fig = px.bar(
+        group_df.head(10),
+        x="city",
+        y="restaurant_id",
+        text="restaurant_id",
+        text_auto=".2f",
+        color="country",
+        title="Top 10 Cidades com Restaurantes- média de avaliação abaixo de 4",
+        labels={
+            "city": "Cidade",
+            "restaurant_id": "Quantidade de Restaurantes",
+            "country": "País",
+        },
+    )
+
+    st.plotly_chart(fig)
+
+#=================================================================================
+     # GRAFICO 3
+    fig_box = px.box(
+    df2,
+    x="country",
+    y="aggregate_rating",
+    color="country",
+    title="Distribuição da Avaliação Média por País",
+    labels={"aggregate_rating": "Avaliação Média", "country": "País"},
+    )
+
+    st.plotly_chart(fig_box)
+
+#=================================================================================
+
+     # GRAFICO 4
+
+    # Agrupe por país e cidade, calcule a média da avaliação e conte o número de restaurantes
+    group_df = (
+        df2.loc[
+            df2["country"].isin(countries),
+            ["restaurant_id", "country", "city", "aggregate_rating"],
+        ]
+        .groupby(["country", "city"])
+        .agg({"aggregate_rating": "mean", "restaurant_id": "count"})
+        .reset_index()
+        .rename(columns={"restaurant_id": "num_restaurants"})
+    )
+
+    fig_scatter = px.scatter(
+        group_df,
+        x="num_restaurants",
+        y="aggregate_rating",
+        color="country",
+        size="num_restaurants",
+        title="Relação entre Avaliação Média e Quantidade de Restaurantes por Cidade",
+        labels={"num_restaurants": "Quantidade de Restaurantes", "aggregate_rating": "Avaliação Média"},
+    )
+
+    st.plotly_chart(fig_scatter)
+
+#=================================================================================
+     # GRAFICO 5
+    group_df = (
+        df2.loc[df2["country"].isin(countries), ["cuisines", "country", "city"]]
+        .groupby(["country", "city"])
+        .nunique()
+        .sort_values(["cuisines", "city"], ascending=[False, True])
+        .reset_index()
+    )
+
+    fig = px.bar(
+        group_df.head(10),
+        x="city",
+        y="cuisines",
+        text="cuisines",
+        color="country",
+        title="Top 10 Cidades com mais restaurantes: Tipos culinários distintos",
+        labels={
+            "city": "Cidades",
+            "cuisines": "Quantidade de Tipos Culinários Únicos",
+            "country": "País",
+        },
+    )
+
+    st.plotly_chart(fig)
+#=================================================================================
+
+
+
+
+
