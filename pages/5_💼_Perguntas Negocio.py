@@ -5,7 +5,7 @@ import inflection
 import plotly.express as px
 from PIL import Image
 import streamlit as st
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import folium
 from folium.plugins import MarkerCluster
 from streamlit_folium import folium_static
