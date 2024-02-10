@@ -2,7 +2,7 @@
 
 A empresa Vorges Eat é uma marketplace de restaurantes fictício. Sendo o seu core business facilitar o encontro e negociações de clientes e restaurantes. Os restaurantes fazem o cadastro dentro da plataforma da Vorges Eat, que disponibiliza informações como endereço, tipo de culinária servida, se possui reservas, se faz entregas e também uma nota de avaliação dos serviços e produtos do restaurante, dentre outras informações.
 
-Link do WebApp você pode conferir [clicando aqui!]()
+Link do WebApp você pode conferir [clicando aqui!](https://vorges-data-vorges-eat-company-home-zntgtx.streamlit.app/)
 
 ## Como utilizar este Dashboard?
 No menu lateral deste Web App há cinco páginas de visões estratégicas da Vorges Eat:
