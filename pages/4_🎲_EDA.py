@@ -135,7 +135,7 @@ def process_data(file_path):
     df["cuisines"] = df.loc[:, "cuisines"].apply(lambda x: x.split(",")[0])
     df = df.drop_duplicates()
     df = adjust_columns_order(df)
-    df.to_csv('/home/vinicius/repos/projeto_ftc_vorges/datasets/data_processed.csv', index=False)
+    df.to_csv('datasets/data_processed.csv', index=False)
     return df
 
 # Função - Medidas Estatísticas
