@@ -13,7 +13,7 @@ from streamlit_folium import folium_static
 #========================================================================
 #==================== Variáveis Auxiliares ==============================
 #========================================================================
-FILE_PATH = '/home/vinicius/repos/projeto_ftc_vorges/datasets/zomato.csv'
+FILE_PATH = 'datasets/zomato.csv'
 
 COUNTRIES = {
     1: "India",
